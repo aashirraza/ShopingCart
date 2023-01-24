@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using SC.Business.DataServices;
-using SC.Business.DataServices.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using SC.Business.Interfaces;
 using SC.Business.Model;
 
 namespace SC.WebApp.Controllers
@@ -69,14 +67,7 @@ namespace SC.WebApp.Controllers
         {
             try
             {
-                var product = _productServices.GetAll().Where(x => x.Id == model.Id ).FirstOrDefault();
-                if (product != null)
-                {
-                    product.Name = model.Name;
-                    product.Description = model.Description;
-                    product.Catagory = model.Catagory;
-                    product.Company = model.Company;
-                }
+                _productServices.Update(model);
                 return RedirectToAction(nameof(Index));
             }
             catch

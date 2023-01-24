@@ -1,5 +1,8 @@
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.EntityFrameworkCore;
 using SC.Business.DataServices;
-using SC.Business.DataServices.Interfaces;
+using SC.Business.Interfaces;
+using SC.Data;
 
 namespace SC.WebApp
 {
@@ -12,8 +15,12 @@ namespace SC.WebApp
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            //configure entity framework
+            builder.Services.AddDbContext<StoreManagementDbContext>(
+                options => options.UseSqlServer("Data Source=DESKTOP-RSNV8UD; Database=ShopingCartDb;TrustServerCertificate=True;Integrated Security=SSPI;"));
+
             // all of the custom configuration
-            builder.Services.AddSingleton<IProductServices , ProductServices>();
+            builder.Services.AddScoped<IProductServices , ProductServices>();
 
             var app = builder.Build();
 

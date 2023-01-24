@@ -1,33 +1,57 @@
-﻿using SC.Business.DataServices.Interfaces;
+﻿using SC.Business.Interfaces;
 using SC.Business.Model;
-using System.Security.Cryptography.X509Certificates;
+using SC.Data;
 
 namespace SC.Business.DataServices
 {
     public class ProductServices : IProductServices
     {
-        private List<ProductModel> products = new List<ProductModel>();
+        private readonly StoreManagementDbContext _dbContext;
+       
+        public ProductServices(StoreManagementDbContext dbContext ) 
+        {
+            _dbContext = dbContext;
+        }    
 
         public List<ProductModel> GetAll()
         {
-            products.Add(new ProductModel { Id = 1, Name = "Perfume 1", Catagory = "Men", Company = "Guci", Description = "New arivals" });
-            return products;
+            var allProducts = _dbContext.Products.ToList();
+            var productModels = allProducts.Select(x => new ProductModel { Id = x.Id, Name = x.Name,
+                                                                        Catagory = x.Catagory,
+                                                                        Company = x.Company, 
+                                                                        Description = x.Description }).ToList();
+            return productModels;
         }
 
         public void Add(ProductModel model)
         {
-            products.Add(model);
+            _dbContext.Products.Add(new Data.Model.product { Id = model.Id, Name = model.Name, Catagory = model.Catagory, Company = model.Company, Description = model.Description });
+            _dbContext.SaveChanges();
         }
 
+        public void Update(ProductModel model)
+        {
+            var entity = _dbContext.Products.FirstOrDefault(x => x.Id == model.Id);
+            if (entity != null)
+            {
+                entity.Name = model.Name;
+                entity.Catagory = model.Catagory;
+                entity.Company = model.Company;
+                entity.Description = model.Description;
+                _dbContext.SaveChanges();
+            }
+        }
         public void Delete(int id)
         {
-            var productToDelete = products.Where(x => x.Id == id).FirstOrDefault();
+            var productToDelete = _dbContext.Products.Where(x => x.Id == id).FirstOrDefault();
             if (productToDelete != null)
             {
-                products.Remove(productToDelete);
+                _dbContext.Remove(productToDelete);
+                _dbContext.SaveChanges();
             }
           
         }
 
+        
     }
 }
