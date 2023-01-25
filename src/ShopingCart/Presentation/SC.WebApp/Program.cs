@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SC.Business.DataServices;
 using SC.Business.Interfaces;
 using SC.Data;
+using SC.DependencyInjection;
 
 namespace SC.WebApp
 {
@@ -14,13 +15,8 @@ namespace SC.WebApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
-            //configure entity framework
-            builder.Services.AddDbContext<StoreManagementDbContext>(
-                options => options.UseSqlServer("Data Source=DESKTOP-RSNV8UD; Database=ShopingCartDb;TrustServerCertificate=True;Integrated Security=SSPI;"));
-
-            // all of the custom configuration
-            builder.Services.AddScoped<IProductServices , ProductServices>();
+            //All Application DI Configuration.
+            builder.Services.AppDISetup(builder.Configuration);
 
             var app = builder.Build();
 

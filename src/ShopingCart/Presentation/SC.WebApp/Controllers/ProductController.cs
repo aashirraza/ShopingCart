@@ -17,15 +17,14 @@ namespace SC.WebApp.Controllers
         // GET: ProductController
         public ActionResult Index(string search)
         {
-            List<ProductModel> products = null; 
+            List<ProductModel> products;
             if (search == null)
             {
                 products =  _productServices.GetAll();
             }
             else
             {
-                products = _productServices.GetAll().Where(x => x.Name.ToLower()
-                .Contains(search.Trim().ToLower())).ToList();
+                products = _productServices.Search(search);
             }
             return View(products);
         }
