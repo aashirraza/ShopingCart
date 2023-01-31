@@ -21,6 +21,10 @@ namespace SC.DependencyInjection
 
             // all of the custom configuration
             services.AddScoped<IProductServices, ProductServices>();
+            services.AddScoped<IStoreServices, StoreServices>();
+
+            //automapper Configuration
+            services.AddAutoMapper(typeof(BusinessEntityMappings));
         }
     }
 }

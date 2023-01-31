@@ -1,17 +1,28 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SC.Business.Interfaces;
 using SC.Business.Model;
 
 namespace SC.WebApp.Controllers
 {
     public class StoreController : Controller
     {
+        private readonly IStoreServices _storeService;
+
+        public StoreController(IStoreServices storeService)
+        {
+            _storeService = storeService;
+        }
+
+
         // GET: StoreController
         public ActionResult Index()
         {
-            List<StoreModel> stores = new List<StoreModel>();
-            stores.Add(new StoreModel { Id = 1, Description = "Store Controller", Name = "Store 1", Location = "Islamabad" });
-            return View(stores);
+            var storeModel = new StoreModel { Name = "Store 1", Description = "Des 1", Location = "Loc 1" };
+            _storeService.Add(storeModel);
+
+            var models= _storeService.GetAll();
+            return View(models);
         }
 
         // GET: StoreController/Details/5

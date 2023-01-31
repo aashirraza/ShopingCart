@@ -10,5 +10,6 @@ namespace SC.Data
 
         }
         public DbSet<product> Products { get; set; }
+        public DbSet<Store> Stores { get; set; }
     }
 }
