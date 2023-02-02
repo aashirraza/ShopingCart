@@ -23,7 +23,7 @@ namespace SC.Business.DataServices
             var allProducts = _repository.Get(x => x.Name.ToLower()
                 .Contains(searchTerm) || x.Catagory.ToLower()
                 .Contains(searchTerm) || x.Company.ToLower()
-                .Contains(searchTerm)).ToList();
+                .Contains(searchTerm)) .ToList();
             var productModels = allProducts.Select(x => new ProductModel
             {
                 Id = x.Id,

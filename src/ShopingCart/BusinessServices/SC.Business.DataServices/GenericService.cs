@@ -23,6 +23,13 @@ namespace SC.Business.DataServices
             return allModels;
         }
 
+        public TModel GetById(int id)
+        {
+            var Entity = _repository.Get(x => x.Id == id).FirstOrDefault();
+            var models = _mapper.Map<TModel>(Entity);
+            return models;
+        }
+
         public void Add(TModel model)
         {
             var entity= _mapper.Map<TEntity>(model);
