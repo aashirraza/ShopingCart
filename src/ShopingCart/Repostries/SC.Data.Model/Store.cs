@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SC.Data.Model
+﻿namespace SC.Data.Model
 {
     public class Store : BaseEntity
     {
+        public Store()
+        {
+            Products = new List<product>();
+        }
         public string Name { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public string Catagory { get; set; } = string.Empty;
         public string Company { get; set; } = string.Empty;
+        public string Location { get; set; } = string.Empty;
+        public ICollection<product> Products { get; set; }
 
 
     }

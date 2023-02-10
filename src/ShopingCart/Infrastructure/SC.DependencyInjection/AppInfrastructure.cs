@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SC.Business.DataServices;
@@ -19,6 +21,12 @@ namespace SC.DependencyInjection
             //repository configuration
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie((cookieOptions) => 
+                {
+                    cookieOptions.LoginPath = "/Authentication/login";
+                    cookieOptions.Cookie = new CookieBuilder { Name = "ShopingCartCookie" };
+                });
             // all of the custom configuration
             services.AddScoped<IProductServices, ProductServices>();
             services.AddScoped<IStoreServices, StoreServices>();

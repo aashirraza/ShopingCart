@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SC.Business.Interfaces;
 using SC.Business.Model;
 
 namespace SC.WebApp.Controllers
 {
+    [Authorize]
     public class StoreController : Controller
     {
         private readonly IStoreServices _storeService;
@@ -44,6 +46,7 @@ namespace SC.WebApp.Controllers
         {
             try
             {
+                
                 _storeService.Add(model);
                 return RedirectToAction(nameof(Index));
             }

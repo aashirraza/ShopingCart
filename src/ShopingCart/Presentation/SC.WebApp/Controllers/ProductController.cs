@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SC.Business.Interfaces;
 using SC.Business.Model;
 
 namespace SC.WebApp.Controllers
 {
+    [Authorize]
     public class ProductController : Controller
     {
         private readonly IProductServices _productServices;
@@ -15,23 +17,19 @@ namespace SC.WebApp.Controllers
 
 
         // GET: ProductController
-        public ActionResult Index(string search)
+        public ActionResult Index(int StoreId, string? search = "")
         {
-            List<ProductModel> products;
-            if (search == null)
-            {
-                products =  _productServices.GetAll();
-            }
-            else
-            {
-                products = _productServices.Search(search);
-            }
+            ViewBag.StoreId= StoreId;
+            ViewBag.searchTerm = search;
+
+            var products = _productServices.ProductsForStore(StoreId, search);
             return View(products);
         }
 
         // GET: ProductController/Create
-        public ActionResult Create()
+        public ActionResult Create(int? StoreId)
         {
+            ViewBag.StoreId = StoreId;
             return View();
         }
 
@@ -43,6 +41,7 @@ namespace SC.WebApp.Controllers
         {
             try
             {
+                model.Store = null;
                 _productServices.Add(model);
                 return RedirectToAction(nameof(Index));
             }

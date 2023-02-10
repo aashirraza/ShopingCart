@@ -5,5 +5,6 @@ namespace SC.Business.Interfaces
 {
     public interface IStoreServices : IGenericService<StoreModel>
     {
+
     }
 }

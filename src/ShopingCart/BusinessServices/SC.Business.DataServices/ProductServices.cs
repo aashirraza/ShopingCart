@@ -14,9 +14,33 @@ namespace SC.Business.DataServices
         public ProductServices(IRepository<product> repository, IMapper mapper) : base(repository, mapper) 
         {
             _repository = repository;
-        }    
+        }
 
-         
+        public List<ProductModel> ProductsForStore(int StoreId, string? searchTerm)
+        {
+            
+
+            var productsQurable = _repository.Get(x => x.StoreId == StoreId);
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+            searchTerm = searchTerm.Trim().ToLower();
+                productsQurable = productsQurable.Where(x => x.Name.ToLower()
+                .Contains(searchTerm) || x.Catagory.ToLower()
+                .Contains(searchTerm) || x.Company.ToLower()
+                .Contains(searchTerm));
+            }
+            var productModels = productsQurable.Select(x => new ProductModel
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Catagory = x.Catagory,
+                Company = x.Company,
+                Description = x.Description
+            }).ToList();
+            return productModels;
+        }
+
         public List<ProductModel> Search(string searchTerm)
         {
             searchTerm = searchTerm.Trim().ToLower();
